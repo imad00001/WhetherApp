@@ -10,4 +10,6 @@ interface api {
         @Query("appid") apiKey: String,
         @Query("units") units: String = "metric"
         ): WeatherResponse
+
+    // :)
 }

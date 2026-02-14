@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.whetherapp"
+    namespace = "com.example.weatherapp"
     compileSdk = 36
 
     defaultConfig {

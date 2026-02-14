@@ -1,9 +1,10 @@
-package com.example.whetherapp.data.api
+package com.example.weatherapp.data.api
 
+import com.example.weatherapp.data.model.WeatherResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface api {
+interface Weatherapi {
     @GET("data/2.5/weather")
     suspend fun getWhetherByCity(
         @Query("q") city: String,
@@ -11,5 +12,5 @@ interface api {
         @Query("units") units: String = "metric"
         ): WeatherResponse
 
-    // :):)
+
 }

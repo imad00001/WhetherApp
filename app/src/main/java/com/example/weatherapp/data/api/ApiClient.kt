@@ -1,4 +1,4 @@
-package com.example.whetherapp.data.api
+package com.example.weatherapp.data.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

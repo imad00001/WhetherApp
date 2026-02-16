@@ -37,51 +37,41 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun WeatherScreen(viewModel: WeatherViewModel = viewModel()) {
-    val weatherState by viewModel.weatherState.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val errorMessage by viewModel.errorMessage.collectAsState()
+//Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(16.dp)
+//    ){
+//        OutlinedTextField(
+//            value = city,
+//            onValueChange = { city = it },
+//            modifier = Modifier.fillMaxWidth(),
+//            label = { Text("Enter city name") }
+//        )
+//        Spacer(modifier = Modifier.height(8.dp))
+//
+//        Button(
+//            onClick = { viewModel.fetchWeather(city, "4fdf306b50f58306ec6510dc5f5539ec") },
+//            modifier = Modifier.fillMaxWidth(),
+//        ){
+//            Text("Get Weather")
+//        }
+//        when {
+//            isLoading -> {
+//                CircularProgressIndicator()
+//            }
+//            errorMessage != null -> {
+//                Text("Error: $errorMessage")
+//            }
+//            weatherState != null -> {
+//                val data = weatherState!!
+//                Text("City: ${data.name}")
+//                Text("Temperature: ${data.main.temp} °C")
+//                Text("Min: ${data.main.tempMin} °C")
+//                Text("Max: ${data.main.tempMax} °C")
+//                Text("Condition: ${data.weather[0].description}")
+//            }
+//        }
+//    }
 
-    var city by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp)
-    ){
-        OutlinedTextField(
-            value = city,
-            onValueChange = { city = it },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text("Enter city name") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(
-            onClick = { viewModel.fetchWeather(city, "4fdf306b50f58306ec6510dc5f5539ec") },
-            modifier = Modifier.fillMaxWidth(),
-        ){
-            Text("Get Weather")
-        }
-        when {
-            isLoading -> {
-                CircularProgressIndicator()
-            }
-            errorMessage != null -> {
-                Text("Error: $errorMessage")
-            }
-            weatherState != null -> {
-                Text("City: {$weatherState!!.name}")
-                Text("Temperature: {$weatherState!!.main.temp} °C")
-                Text("City: {$weatherState!!.main.tempMin} °C")
-                Text("City: {$weatherState!!.main.tempMax} °C")
-                Text("City: {$weatherState!!.weather[0].description}")
-
-            }
-        }
-    }
-
-
-
-}
-//:)
 

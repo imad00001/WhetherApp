@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,12 +31,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun WeatherScreen(viewModel: WeatherViewModel = viewModel()) {
+fun WeatherScreen(city: String, viewModel: WeatherViewModel = viewModel()) {
     val weatherState by viewModel.weatherState.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
 
-    var city by remember { mutableStateOf("") }
+    LaunchedEffect(city) {
+        viewModel.fetchWeather(city, "4fdf306b50f58306ec6510dc5f5539ec")
+    }
     val backgroundBrush = Brush.verticalGradient(
         listOf(
             Color(0xFF4FACFE),
@@ -49,88 +52,64 @@ fun WeatherScreen(viewModel: WeatherViewModel = viewModel()) {
             .background(backgroundBrush)
             .padding(16.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            OutlinedTextField(
-                value = city,
-                onValueChange = { city = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Enter city name") }
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
-                onClick = { viewModel.fetchWeather(city, "4fdf306b50f58306ec6510dc5f5539ec") },
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text("Search")
+        when {
+            isLoading -> {
+                CircularProgressIndicator()
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            errorMessage != null -> {
+                Text(
+                    "Error: $errorMessage",
+                    color = Color.White
+                )
+            }
 
-            when {
-                isLoading -> {
-                    CircularProgressIndicator()
-                }
+            weatherState != null -> {
+                val data = weatherState!!
 
-                errorMessage != null -> {
-                    Text(
-                        "Error: $errorMessage",
-                        color = Color.White
-                    )
-                }
+                Spacer(modifier = Modifier.height(24.dp))
 
-                weatherState != null -> {
-                    val data = weatherState!!
+                Text(
+                    "City: ${data.name}",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(24.dp))
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                Text(
+                    "Temperature: ${data.main.temp} °C",
+                    style = MaterialTheme.typography.displayLarge,
+                    color = Color.White
+                )
 
-                    Text(
-                        "City: ${data.name}",
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = Color.White
-                    )
-                    Spacer(modifier = Modifier.height(24.dp))
+                Text(
+                    "Condition: ${data.weather[0].description}",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.White.copy(alpha = 0.8f)
+                )
 
-                    Text(
-                        "Temperature: ${data.main.temp} °C",
-                        style = MaterialTheme.typography.displayLarge,
-                        color = Color.White
-                    )
+                Spacer(modifier = Modifier.height(24.dp))
 
-                    Text(
-                        "Condition: ${data.weather[0].description}",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.White.copy(alpha = 0.8f)
-                    )
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ){
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("MIN", color = Color.White.copy(alpha = 0.7f))
-                            Text("${data.main.tempMin.toInt()}°", color = Color.White)
-                        }
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("MAX", color = Color.White.copy(alpha = 0.7f))
-                            Text("${data.main.tempMax.toInt()}°", color = Color.White)
-                        }
-
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("MIN", color = Color.White.copy(alpha = 0.7f))
+                        Text("${data.main.tempMin.toInt()}°", color = Color.White)
+                    }
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("MAX", color = Color.White.copy(alpha = 0.7f))
+                        Text("${data.main.tempMax.toInt()}°", color = Color.White)
                     }
 
-
-
                 }
+
+
             }
-
         }
+
     }
-
-
 }
-//:):)
+
+

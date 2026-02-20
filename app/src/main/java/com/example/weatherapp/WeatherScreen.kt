@@ -46,11 +46,14 @@ fun WeatherScreen(city: String, viewModel: WeatherViewModel = viewModel()) {
         )
     )
 
-    Box(
+    Column (
         modifier = Modifier
             .fillMaxSize()
             .background(backgroundBrush)
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
         when {
             isLoading -> {
@@ -72,7 +75,8 @@ fun WeatherScreen(city: String, viewModel: WeatherViewModel = viewModel()) {
                 Text(
                     "City: ${data.name}",
                     style = MaterialTheme.typography.headlineMedium,
-                    color = Color.White
+                    color = Color.White,
+
                 )
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -80,6 +84,7 @@ fun WeatherScreen(city: String, viewModel: WeatherViewModel = viewModel()) {
                     "Temperature: ${data.main.temp} °C",
                     style = MaterialTheme.typography.displayLarge,
                     color = Color.White
+
                 )
 
                 Text(

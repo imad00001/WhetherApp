@@ -12,4 +12,7 @@ class WeatherRepository {
     suspend fun getWeather(city: String, apiKey: String): WeatherResponse {
         return weatherApi.getWhetherByCity(city, apiKey)
     }
+    suspend fun getWeatherByLocation(lat: Double, lon: Double, apiKey: String): WeatherResponse {
+        return weatherApi.getWhetherByCoordinates(lat = null, lon = null, apiKey = apiKey)
+    }
 }

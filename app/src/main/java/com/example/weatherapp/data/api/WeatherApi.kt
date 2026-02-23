@@ -10,7 +10,13 @@ interface WeatherApi {
         @Query("q") city: String,
         @Query("appid") apiKey: String,
         @Query("units") units: String = "metric"
-        ): WeatherResponse
+    ): WeatherResponse
 
+    suspend fun getWhetherByCoordinates(
+        @Query("lat") lat: Double? = null,
+        @Query("lon") lon: Double? = null,
+        @Query("appid") apiKey: String,
+        @Query("units") units: String = "metric"
+    ): WeatherResponse
 
 }

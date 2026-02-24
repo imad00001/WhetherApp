@@ -66,7 +66,9 @@ fun WeatherScreen(city: String, viewModel: WeatherViewModel = viewModel()) {
             }
         }
     LaunchedEffect(city) {
-        viewModel.fetchWeather(city, "4fdf306b50f58306ec6510dc5f5539ec")
+        if (city.isNotBlank()) {
+            viewModel.fetchWeather(city, "4fdf306b50f58306ec6510dc5f5539ec")
+        }
     }
     val backgroundBrush = Brush.verticalGradient(
         listOf(

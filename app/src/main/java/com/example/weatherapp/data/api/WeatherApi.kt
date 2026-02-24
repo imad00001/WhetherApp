@@ -12,9 +12,10 @@ interface WeatherApi {
         @Query("units") units: String = "metric"
     ): WeatherResponse
 
+    @GET("data/2.5/weather")
     suspend fun getWhetherByCoordinates(
-        @Query("lat") lat: Double? = null,
-        @Query("lon") lon: Double? = null,
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
         @Query("appid") apiKey: String,
         @Query("units") units: String = "metric"
     ): WeatherResponse

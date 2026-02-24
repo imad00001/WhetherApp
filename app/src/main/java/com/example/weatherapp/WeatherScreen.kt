@@ -41,6 +41,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import com.google.android.gms.location.Priority
 
 @SuppressLint("MissingPermission")
 @Composable
@@ -54,19 +55,22 @@ fun WeatherScreen(city: String, viewModel: WeatherViewModel = viewModel()) {
     val permissionLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                fusedLoactionClient.getLastLocation().addOnSuccessListener { location ->
-                    location?.let{
-                        viewModel.fetchWeatherByLocation(
-                            it.latitude,
-                            it.longitude,
-                            "4fdf306b50f58306ec6510dc5f5539ec"
-                        )
+                fusedLoactionClient.getCurrentLocation(
+                    Priority.PRIORITY_HIGH_ACCURACY,
+                    null
+                ).addOnSuccessListener { location ->
+                        location?.let {
+                            viewModel.fetchWeatherByLocation(
+                                it.latitude,
+                                it.longitude,
+                                "4fdf306b50f58306ec6510dc5f5539ec"
+                            )
+                        }
                     }
-                }
             }
         }
     LaunchedEffect(city) {
-        if (city.isNotBlank()) {
+            if (city.isNotBlank()) {
             viewModel.fetchWeather(city, "4fdf306b50f58306ec6510dc5f5539ec")
         }
     }
